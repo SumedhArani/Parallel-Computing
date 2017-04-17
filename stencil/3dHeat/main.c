@@ -15,23 +15,29 @@ int main(int argc,char *argv[])
   double *A0;
   int nx;
   int ny;
+  int nz;
   int tx;
   int ty;
+  int tz;
   int timesteps;
   int i;
 
   #ifdef DEBUG
-  nx = 8192;
-  ny = 8192;
+  nx = 250;
+  ny = 250;
+  nz = 250;
   tx = 125;
   ty = 125;
+  tz = 125;
   timesteps = 100;
   #else
   nx = atoi(argv[1]);
   ny = atoi(argv[2]);
-  tx = atoi(argv[3]);
-  ty = atoi(argv[4]);
-  timesteps = atoi(argv[5]);
+  nz = atoi(argv[3]);
+  tx = atoi(argv[4]);
+  ty = atoi(argv[5]);
+  tz = atoi(argv[6]);
+  timesteps = atoi(argv[7]);
   #endif
   
   ticks t1, t2;
@@ -41,8 +47,8 @@ int main(int argc,char *argv[])
   spt = seconds_per_tick();
 
   /* allocate arrays */ 
-  Anext=(double*)malloc(sizeof(double)*nx*ny);
-  A0=(double*)malloc(sizeof(double)*nx*ny);
+  Anext=(double*)malloc(sizeof(double)*nx*ny*nz);
+  A0=(double*)malloc(sizeof(double)*nx*ny*nz);
   
   printf("USING TIMER: %s \t  SECONDS PER TICK:%g \n", TIMER_DESC, spt);
 
@@ -58,22 +64,15 @@ int main(int argc,char *argv[])
     
     /* stencil function */ 
     #ifdef HEAT
-    heat(A0, Anext, nx, ny, timesteps);
+    heat(A0, Anext, nx, ny, nz, timesteps);
     #endif
 
     #ifdef HEATBLOCK
-    heatBlocked(A0, Anext, nx, ny, tx, ty, timesteps);
+    heatBlocked(A0, Anext, nx, ny, nz, tx, ty, tz, timesteps);
   	#endif
     t2 = getticks();
     
     printf("elapsed ticks: %g  time:%g \n", elapsed(t2, t1), spt * elapsed(t2,t1));
   }
-  double total = 0.0;
-  for (int j = 0; j < ny; j++) {
-    for (int i = 0; i < nx; i++) {
-      total += A0[Index2D (nx, i, j)];
-    }
-  }
-  printf("Checksum: %f\n", total);
 }
 
