@@ -15,29 +15,23 @@ int main(int argc,char *argv[])
   double *A0;
   int nx;
   int ny;
-  int nz;
   int tx;
   int ty;
-  int tz;
   int timesteps;
   int i;
 
   #ifdef DEBUG
-  nx = 512;
-  ny = 512;
-  nz = 512;
-  tx = 250;
-  ty = 250;
-  tz = 250;
+  nx = 8192;
+  ny = 8192;
+  tx = 125;
+  ty = 125;
   timesteps = 100;
   #else
   nx = atoi(argv[1]);
   ny = atoi(argv[2]);
-  nz = atoi(argv[3]);
-  tx = atoi(argv[4]);
-  ty = atoi(argv[5]);
-  tz = atoi(argv[6]);
-  timesteps = atoi(argv[7]);
+  tx = atoi(argv[3]);
+  ty = atoi(argv[4]);
+  timesteps = atoi(argv[5]);
   #endif
   
   ticks t1, t2;
@@ -47,41 +41,39 @@ int main(int argc,char *argv[])
   spt = seconds_per_tick();
 
   /* allocate arrays */ 
-  Anext=(double*)malloc(sizeof(double)*nx*ny*nz);
-  A0=(double*)malloc(sizeof(double)*nx*ny*nz);
+  Anext=(double*)malloc(sizeof(double)*nx*ny);
+  A0=(double*)malloc(sizeof(double)*nx*ny);
   
   printf("USING TIMER: %s \t  SECONDS PER TICK:%g \n", TIMER_DESC, spt);
 
 	for (i=0;i<NUM_TRIALS;i++) 
 	{
-   	clear_cache();
+   	// clear_cache();
 
    	/* Initialise Arrays */
-    StencilInit(nx,ny,nz,Anext);
-    StencilInit(nx,ny,nz,A0);
+    StencilInit(nx,ny,Anext);
+    StencilInit(nx,ny,A0);
  
     t1 = getticks();	
     
     /* stencil function */ 
     #ifdef HEAT
-    heat(A0, Anext, nx, ny, nz, timesteps);
+    heat(A0, Anext, nx, ny, timesteps);
     #endif
 
     #ifdef HEATBLOCK
-    heatBlocked(A0, Anext, nx, ny, nz, tx, ty, tz, timesteps);
+    heatBlocked(A0, Anext, nx, ny, tx, ty, timesteps);
   	#endif
     t2 = getticks();
     
     printf("elapsed ticks: %g  time:%g \n", elapsed(t2, t1), spt * elapsed(t2,t1));
   }
   double total = 0.0;
-  for (int k = 0; k < nz; k++) {
-    for (int j = 0; j < ny; j++) {
-      for (int i = 0; i < nx; i++) {
-        total += A0[Index3D (nx, ny, i, j, k)];
-      }
+  for (int j = 0; j < ny; j++) {
+    for (int i = 0; i < nx; i++) {
+      total += A0[Index2D (nx, i, j)];
     }
   }
-  printf("Check: %f\n", total);
+  printf("Checksum: %f\n", total);
 }
 

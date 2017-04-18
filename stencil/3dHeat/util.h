@@ -3,7 +3,7 @@
 
 #include "common.h"
 
-void StencilInit(int nx,int ny, double *A);
+void StencilInit(int nx, int ny, int nz, double *A);
 
 void clear_cache();
 

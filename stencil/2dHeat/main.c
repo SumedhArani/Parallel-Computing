@@ -23,8 +23,8 @@ int main(int argc,char *argv[])
   #ifdef DEBUG
   nx = 8192;
   ny = 8192;
-  tx = 125;
-  ty = 125;
+  tx = 1024;
+  ty = 1024;
   timesteps = 100;
   #else
   nx = atoi(argv[1]);

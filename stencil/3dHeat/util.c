@@ -8,16 +8,16 @@
 #include "util.h"
 #include "cycle.h"
 
-void StencilInit(int nx, int ny, double *A)
+void StencilInit(int nx, int ny, int nz, double *A)
 {
-  long last = nx*ny;
+  long last = nx*ny*nz;
   long i;
   float check;
+  srand(31);
   for(i=0;i<last;i++) {
 #ifdef RANDOMVALUES
-    srand(31);
   	check = rand() % 100;
-	  A[i] = check /100;
+	A[i] = check /100;
   }
 #else
 	  A[i]=1.0;
@@ -38,13 +38,11 @@ double seconds_per_tick()
 
 	while (spt <= 0)
 	{
-
-	t0=getticks();	
-	sleep(i);
-	t1=getticks();
-	spt = (double)i / elapsed(t1,t0);
-	i++;
-
+		t0=getticks();	
+		sleep(i);
+		t1=getticks();
+		spt = (double)i / elapsed(t1,t0);
+		i++;
 	}
 
 	return spt;
