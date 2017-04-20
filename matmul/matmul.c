@@ -3,6 +3,7 @@
 #include <string.h>
 #include "matrix.h"
 #include "blocked.h"
+#include "tiled.h"
 #include "basic.h"
 
 #define MAX_SIZE 1024
@@ -30,6 +31,11 @@ int main(int argc, char const *argv[])
     #ifdef BLOCKED
     const int M = MAX_SIZE;
     blocked_matmul(M, A, B, C);
+    #endif
+
+    #ifdef TILED
+    const int M = MAX_SIZE;
+    tiled_matmul(M, A, B, C);
     #endif
 
     free(A);

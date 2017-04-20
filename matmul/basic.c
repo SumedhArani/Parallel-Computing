@@ -7,10 +7,11 @@
 void basic_matmul(const int M, 
                   const double *A, const double *B, double *C)
 {
+    omp_set_num_threads(8);
+
     int i, j, k;
     double cij;
-    omp_set_num_threads(4);
-    #pragma omp parallel for private(cij) collapse(2)
+    #pragma omp parallel for private(cij) collapse(2) schedule(static)
     for (j = 0; j < M; ++j)
     {
 		for (i = 0; i < M; ++i)         
