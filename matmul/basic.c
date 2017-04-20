@@ -8,12 +8,15 @@ void basic_matmul(const int M,
                   const double *A, const double *B, double *C)
 {
     int i, j, k;
+    double cij;
+    omp_set_num_threads(4);
+    #pragma omp parallel for private(cij) collapse(2)
     for (j = 0; j < M; ++j)
     {
-        #pragma omp parallel for
 		for (i = 0; i < M; ++i)         
         {
-            double cij = C[j*M+i];
+            cij = C[j*M+i];
+            #pragma omp parallel for shared(cij)    
             for (k = 0; k < M; ++k)
             {
                 cij += A[k*M+i] * B[j*M+k];

@@ -5,6 +5,7 @@
 #include "common.h"
 #include "heat-blocked.h"
 #include "heat.h"
+#include "heat-time.h"
 
 #define NUM_TRIALS 2
 #define CUTOFF 4096
@@ -23,12 +24,12 @@ int main(int argc,char *argv[])
   int i;
 
   #ifdef DEBUG
-  nx = 512;
-  ny = 512;
-  nz = 512;
-  tx = 250;
-  ty = 250;
-  tz = 250;
+  nx = 258;
+  ny = 258;
+  nz = 258;
+  tx = 64;
+  ty = 64;
+  tz = 64;
   timesteps = 100;
   #else
   nx = atoi(argv[1]);
@@ -70,6 +71,10 @@ int main(int argc,char *argv[])
     #ifdef HEATBLOCK
     heatBlocked(A0, Anext, nx, ny, nz, tx, ty, tz, timesteps);
   	#endif
+
+    #ifdef HEATTIME
+    heatTime(A0, Anext, nx, ny, nz, tx, ty, tz, timesteps);
+    #endif
     t2 = getticks();
     
     printf("elapsed ticks: %g  time:%g \n", elapsed(t2, t1), spt * elapsed(t2,t1));
