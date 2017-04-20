@@ -24,12 +24,12 @@ int main(int argc,char *argv[])
   int i;
 
   #ifdef DEBUG
-  nx = 258;
-  ny = 258;
-  nz = 258;
-  tx = 64;
+  nx = 514;
+  ny = 514;
+  nz = 514;
+  tx = 512;
   ty = 64;
-  tz = 64;
+  tz = 4;
   timesteps = 100;
   #else
   nx = atoi(argv[1]);

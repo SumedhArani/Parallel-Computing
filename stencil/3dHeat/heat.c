@@ -14,9 +14,9 @@ void heat(double* A0, double* Anext, int nx, int ny, int nz, int timesteps)
 
   for (t = 0; t < timesteps; t++) 
   {
-    //pragma omp parallel for collapse(2) private(i, j, k) schedule(static)
+    //#pragma omp parallel for collapse(2) private(i, j, k) schedule(static)
     for (k = 1; k < nz - 1; k++) {
-      //#pragma omp parallel for schedule(static)
+      #pragma omp parallel for schedule(static)
       for (j = 1; j < ny - 1; j++) {
         //#pragma omp parallel for shared(i, j, k)
       	for (i = 1; i < nx - 1; i++) {

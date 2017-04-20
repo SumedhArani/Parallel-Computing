@@ -60,7 +60,7 @@ void heatTime(double* A0, double* Anext, int nx, int ny, int nz,
 				  blockMax_y = MAX(1, jj + ty + t * pos_y_slope);
 				  blockMax_z = MAX(1, kk + tz + t * pos_z_slope);
 				  
-				  #pragma omp parallel for collapse(2) private(i, j, k)
+				  #pragma omp parallel for collapse(2) schedule(static)
 				  for (k=blockMin_z; k < blockMax_z; k++) {
 				    for (j=blockMin_y; j < blockMax_y; j++) {
 				      for (i=blockMin_x; i < blockMax_x; i++) {
